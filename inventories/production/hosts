@@ -1,0 +1,9 @@
+[app]
+vm2_ubuntu ansible_host=10.0.1.9
+vm3_centos ansible_host=10.0.1.12
+
+[database]
+vm1_ubuntu ansible_host=10.0.1.14
+
+[web]
+vm1_ubuntu ansible_host=10.0.1.14

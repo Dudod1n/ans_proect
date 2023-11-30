@@ -1,0 +1,70 @@
+---
+- name: Конфигурация серверов Docker
+  hosts: app
+  become: true
+  tasks:
+
+    - name: Установка зависимостей
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: true
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+
+    - name: Добавление GPG ключа
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Добавление репозитория Docker
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+
+    - name: Установка Docker
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: true
+      loop:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+
+    - name: Проверка запуска docker
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+- name: Конфигурация серверов Postgresql-server
+  hosts: database
+  become: true
+  tasks:
+
+    - name: Добавление GPG ключа
+      ansible.builtin.apt_key:
+        url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+        state: present
+
+    - name: Добавление репозитория Postgresql-server
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64] http://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release }}-pgdg main"
+        state: present
+
+    - name: Установка Postgresql-server
+      ansible.builtin.apt:
+        name: postgresql
+        state: present
+        update_cache: true
+
+    - name: Проверка запуска Postgresql-server
+      ansible.builtin.service:
+        name: postgresql
+        state: started
+        enabled: true
