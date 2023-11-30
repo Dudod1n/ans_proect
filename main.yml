@@ -1,4 +1,5 @@
 ---
+# Docker
 - name: Конфигурация серверов Docker
   hosts: app
   become: true
@@ -84,6 +85,8 @@
         enabled: true
       tags:
         - check_service
+
+# Postgresql-server
 
 - name: Конфигурация серверов Postgresql-server
   hosts: database
