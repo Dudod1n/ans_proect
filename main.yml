@@ -2,6 +2,8 @@
 - name: Конфигурация серверов Docker
   hosts: app
   become: true
+  tags:
+    - docker
   tasks:
 
     - name: Установка зависимостей
@@ -15,6 +17,7 @@
         - curl
         - gnupg-agent
         - software-properties-common
+      when: ansible_os_family == "Debian"
 
     - name: Добавление GPG ключа
       ansible.builtin.apt_key:
@@ -35,6 +38,7 @@
         - docker-ce
         - docker-ce-cli
         - containerd.io
+      when: ansible_os_family == "Debian"
 
     - name: Проверка запуска docker
       ansible.builtin.service:
