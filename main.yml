@@ -45,6 +45,8 @@
 - name: Конфигурация серверов Postgresql-server
   hosts: database
   become: true
+  tags:
+    - pg
   tasks:
 
     - name: Добавление GPG ключа
