@@ -59,7 +59,7 @@
 
     - name: Установка Postgresql-server
       ansible.builtin.apt:
-        name: postgresql
+        name: "postgresql={{ pg_version }}"
         state: present
         update_cache: true
 
