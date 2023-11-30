@@ -65,6 +65,12 @@
         state: present
         update_cache: true
 
+    - name: Изменение директории pg data
+      ansible.builtin.lineinfile:
+        path: /etc/postgresql/12/main/postgresql.conf
+        regexp: '^data_directory ='
+        line: data_directory = '{{ pg_dir_data }}'
+
     - name: Проверка запуска Postgresql-server
       ansible.builtin.service:
         name: postgresql
